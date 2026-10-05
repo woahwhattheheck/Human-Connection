@@ -276,11 +276,13 @@ export default {
       textArea.style.position = 'absolute'
       textArea.style.left = '-9999px'
       document.body.appendChild(textArea)
-      textArea.select()
-      const copied = document.execCommand && document.execCommand('copy')
-      document.body.removeChild(textArea)
-
-      if (!copied) throw new Error('Clipboard unavailable')
+      try {
+        textArea.select()
+        const copied = document.execCommand && document.execCommand('copy')
+        if (!copied) throw new Error('Clipboard unavailable')
+      } finally {
+        document.body.removeChild(textArea)
+      }
     },
   },
 }
